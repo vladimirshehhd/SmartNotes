@@ -1,8 +1,10 @@
 {
+  "id": "./",
   "name": "Smart Notes",
   "short_name": "Smart Notes",
   "description": "PWA-приложение для заметок с умной категоризацией.",
-  "start_url": ".",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#f4f7fb",
   "theme_color": "#4f46e5",
