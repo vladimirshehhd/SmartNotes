@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#4f46e5" />
+  <meta name="description" content="Smart Notes — кроссплатформенное PWA-приложение для заметок с умной категоризацией." />
+  <title>Smart Notes</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Интеллектуальные заметки</p>
+        <h1>Smart Notes</h1>
+      </div>
+      <button id="open-settings-btn" class="ghost-button" type="button" aria-label="Открыть настройки">⚙ Настройки</button>
+    </header>
+
+    <main class="layout">
+      <section class="panel composer-panel" aria-labelledby="composer-title">
+        <h2 id="composer-title">Новая заметка</h2>
+        <p class="muted">Примеры: «купить молоко», «подготовить доклад», «позвонить маме».</p>
+
+        <form id="note-form" novalidate>
+          <label class="sr-only" for="note-input">Текст заметки</label>
+          <textarea
+            id="note-input"
+            name="note"
+            rows="4"
+            maxlength="280"
+            placeholder="Введите заметку..."
+          ></textarea>
+
+          <div class="composer-footer">
+            <span id="char-counter" class="muted">0 / 280</span>
+            <button id="add-note-btn" class="primary-button" type="submit">Добавить</button>
+          </div>
+        </form>
+
+        <div id="form-message" class="form-message" role="status" aria-live="polite"></div>
+
+        <div class="rules-box">
+          <h3>Как работает умная категоризация</h3>
+          <ul>
+            <li><strong>Покупки</strong>: купить, магазин, молоко, хлеб, продукты...</li>
+            <li><strong>Учёба</strong>: доклад, экзамен, лабораторная, задание...</li>
+            <li><strong>Личное</strong>: позвонить, семья, встреча, дом...</li>
+            <li><strong>Другое</strong>: если совпадений нет.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="panel notes-panel" aria-labelledby="notes-title">
+        <div class="notes-header">
+          <div>
+            <h2 id="notes-title">Мои заметки</h2>
+            <p id="notes-summary" class="muted">Загрузка...</p>
+          </div>
+          <button id="install-btn" class="ghost-button hidden" type="button">Установить приложение</button>
+        </div>
+
+        <div class="toolbar">
+          <div class="toolbar-group categories" id="category-filters" role="group" aria-label="Фильтры по категориям">
+            <button class="filter-chip active" type="button" data-filter="all">Все</button>
+            <button class="filter-chip" type="button" data-filter="study">Учёба</button>
+            <button class="filter-chip" type="button" data-filter="shopping">Покупки</button>
+            <button class="filter-chip" type="button" data-filter="personal">Личное</button>
+            <button class="filter-chip" type="button" data-filter="other">Другое</button>
+          </div>
+
+          <div class="toolbar-group search-group">
+            <label class="sr-only" for="search-input">Поиск заметок</label>
+            <input id="search-input" type="search" placeholder="Поиск по тексту" />
+            <button id="clear-search-btn" class="ghost-button" type="button">Сбросить</button>
+          </div>
+        </div>
+
+        <div id="notes-state" class="state-box">Загрузка...</div>
+        <div id="notes-list" class="notes-list" aria-live="polite"></div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="settings-dialog" class="settings-dialog">
+    <form method="dialog" class="settings-content">
+      <div class="settings-header">
+        <div>
+          <p class="eyebrow">Параметры приложения</p>
+          <h2>Настройки</h2>
+        </div>
+        <button class="ghost-button" type="submit">✕</button>
+      </div>
+
+      <div class="settings-grid">
+        <label class="field-block">
+          <span>Тема</span>
+          <select id="theme-select">
+            <option value="light">Светлая</option>
+            <option value="dark">Тёмная</option>
+          </select>
+        </label>
+
+        <label class="field-block">
+          <span>Категория по умолчанию</span>
+          <select id="default-category-select">
+            <option value="other">Другое</option>
+            <option value="study">Учёба</option>
+            <option value="shopping">Покупки</option>
+            <option value="personal">Личное</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="settings-actions">
+        <button id="save-settings-btn" class="primary-button" type="button">Сохранить настройки</button>
+        <button id="clear-notes-btn" class="danger-button" type="button">Очистить все заметки</button>
+      </div>
+
+      <div class="about-box">
+        <h3>О приложении</h3>
+        <p>Smart Notes — учебный PWA-проект для создания заметок с автоматической категоризацией по ключевым словам. Данные сохраняются локально в браузере.</p>
+      </div>
+    </form>
+  </dialog>
+
+  <template id="note-card-template">
+    <article class="note-card">
+      <div class="note-meta-row">
+        <span class="category-badge"></span>
+        <time class="note-date"></time>
+      </div>
+      <p class="note-text"></p>
+      <div class="note-actions">
+        <button class="ghost-button delete-note-btn" type="button">Удалить</button>
+      </div>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
